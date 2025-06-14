@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,43 +52,34 @@
   </style>
 </head>
 <body>
-  <h1>Template Validasi Transaksi</h1>
+  <h1>Template Validasi Transaksi</h1><label for="tanggal">Tanggal Entri:</label> <input type="text" id="tanggal" placeholder="contoh: 14 Juni 2025">
 
-  <label for="tanggal">Tanggal Entri:</label>
-  <input type="text" id="tanggal" placeholder="contoh: 14 Juni 2025">
+<label for="produk">Jenis Produk:</label> <select id="produk"> <option value="REGULER">Pulsa (REGULER)</option> <option value="DATA">Data (INTERNET)</option> <option value="TELEPON">Paket Telepon</option> <option value="ISAT">VALIDASI ISAT</option> <option value="TDH4">VALIDASI TDH4 / HAPPY3H3</option> <option value="THREE">VALIDASI THREE HAPPY</option> </select>
 
-  <label for="produk">Jenis Produk:</label>
-  <select id="produk">
-    <option value="REGULER">Pulsa (REGULER)</option>
-    <option value="DATA">Data (INTERNET)</option>
-    <option value="TELEPON">Paket Telepon</option>
-  </select>
+<label for="nomor">Nomor HP:</label> <input type="text" id="nomor" placeholder="contoh: 081234567890">
 
-  <label for="nomor">Nomor HP:</label>
-  <input type="text" id="nomor" placeholder="contoh: 081234567890">
+<label for="sn">Serial Number (SN):</label> <input type="text" id="sn" placeholder="contoh: 1234567890">
 
-  <label for="sn">Serial Number (SN):</label>
-  <input type="text" id="sn" placeholder="contoh: 1234567890">
+<label for="jumlah">Jumlah (untuk Data):</label> <input type="text" id="jumlah" placeholder="contoh: 3">
 
-  <label for="jumlah">Jumlah (untuk Data):</label>
-  <input type="text" id="jumlah" placeholder="contoh: 3">
-
-  <label for="durasi">Durasi Hari (untuk Data):</label>
-  <input type="text" id="durasi" placeholder="contoh: 3">
+<label for="durasi">Durasi Hari (untuk Data):</label> <input type="text" id="durasi" placeholder="contoh: 3">
 
   <div class="button-group">
     <button onclick="generateTemplate()">Buat Template</button>
     <button onclick="clearInputs()">Bersihkan Form</button>
     <button onclick="copyOutput()">Salin Template</button>
-  </div>
+  </div>  <h2>Hasil Template:</h2>
+  <pre><code id="output"></code></pre>  <script>
+    function formatNomor(nomor) {
+      nomor = nomor.trim();
+      if (nomor.startsWith('08')) return '62' + nomor.slice(1);
+      return nomor;
+    }
 
-  <h2>Hasil Template:</h2>
-  <pre><code id="output"></code></pre>
-
-  <script>
     function generateTemplate() {
       const tanggal = document.getElementById('tanggal').value || '[N/A]';
-      const nomor = document.getElementById('nomor').value || '[N/A]';
+      const nomorRaw = document.getElementById('nomor').value || '[N/A]';
+      const nomor = formatNomor(nomorRaw);
       const sn = document.getElementById('sn').value || '[N/A]';
       const jumlah = document.getElementById('jumlah').value || '[N/A]';
       const durasi = document.getElementById('durasi').value || '[N/A]';
@@ -103,6 +93,12 @@
         template = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'TELEPON') {
         template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+      } else if (produk === 'ISAT') {
+        template = `Aktivasi Paket ${jumlah}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
+      } else if (produk === 'TDH4') {
+        template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
+      } else if (produk === 'THREE') {
+        template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlah}GBNEW ke nomor ${nomor}.  Info 888`;
       }
 
       document.getElementById('output').textContent = template;
@@ -121,6 +117,5 @@
         .then(() => alert('Template berhasil disalin!'))
         .catch(() => alert('Gagal menyalin template.'));
     }
-  </script>
-</body>
+  </script></body>
 </html>
