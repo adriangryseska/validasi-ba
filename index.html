@@ -1,63 +1,124 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
-  <title>Template Validasi CS - Markaz Group</title>
+  <title>Template Validasi Transaksi - Markaz Group</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .button-group button {
+      padding: 8px 16px;
+      margin-top: 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+    }
+    .button-group button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
 <body>
-  <h1>Template Validasi Transaksi</h1><label for="tanggal">Tanggal Entri:</label><br> <input type="text" id="tanggal" placeholder="contoh: 14 Juni 2025"><br><br>
+  <h1>Template Validasi Transaksi</h1>
 
-<label for="produk">Jenis Produk:</label><br> <select id="produk"> <option value="REGULER">Pulsa (REGULER)</option> <option value="DATA">Data (INTERNET)</option> <option value="TELEPON">Paket Telepon</option> </select><br><br>
+  <label for="tanggal">Tanggal Entri:</label>
+  <input type="text" id="tanggal" placeholder="contoh: 14 Juni 2025">
 
-<label for="nomor">Nomor HP:</label><br> <input type="text" id="nomor" placeholder="contoh: 081234567890"><br><br>
+  <label for="produk">Jenis Produk:</label>
+  <select id="produk">
+    <option value="REGULER">Pulsa (REGULER)</option>
+    <option value="DATA">Data (INTERNET)</option>
+    <option value="TELEPON">Paket Telepon</option>
+  </select>
 
-<label for="sn">Serial Number (SN):</label><br> <input type="text" id="sn" placeholder="contoh: 1234567890"><br><br>
+  <label for="nomor">Nomor HP:</label>
+  <input type="text" id="nomor" placeholder="contoh: 081234567890">
 
-<label for="jumlah">Jumlah (untuk Data):</label><br> <input type="text" id="jumlah" placeholder="contoh: 3"><br><br>
+  <label for="sn">Serial Number (SN):</label>
+  <input type="text" id="sn" placeholder="contoh: 1234567890">
 
-<label for="durasi">Durasi Hari (untuk Data):</label><br> <input type="text" id="durasi" placeholder="contoh: 3"><br><br>
+  <label for="jumlah">Jumlah (untuk Data):</label>
+  <input type="text" id="jumlah" placeholder="contoh: 3">
 
-<button onclick="generateTemplate()">Buat Template</button> <button onclick="clearInputs()">Bersihkan Form</button>
+  <label for="durasi">Durasi Hari (untuk Data):</label>
+  <input type="text" id="durasi" placeholder="contoh: 3">
+
+  <div class="button-group">
+    <button onclick="generateTemplate()">Buat Template</button>
+    <button onclick="clearInputs()">Bersihkan Form</button>
+    <button onclick="copyOutput()">Salin Template</button>
+  </div>
 
   <h2>Hasil Template:</h2>
   <pre><code id="output"></code></pre>
-  <button onclick="copyOutput()">Salin Template</button>  <script>
-    function generateTemplate() {
-      const tanggal = document.getElementById('tanggal').value || '[Tanggal N/A]';
-      const produk = document.getElementById('produk').value;
-      const nomor = document.getElementById('nomor').value || '[Nomor N/A]';
-      const sn = document.getElementById('sn').value || '[SN N/A]';
-      const jumlah = document.getElementById('jumlah').value || '[Jumlah N/A]';
-      const durasi = document.getElementById('durasi').value || '[Durasi N/A]';
 
-      let template = '';
+  <script>
+    function generateTemplate() {
+      const tanggal = document.getElementById('tanggal').value || '[N/A]';
+      const nomor = document.getElementById('nomor').value || '[N/A]';
+      const sn = document.getElementById('sn').value || '[N/A]';
+      const jumlah = document.getElementById('jumlah').value || '[N/A]';
+      const durasi = document.getElementById('durasi').value || '[N/A]';
+      const produk = document.getElementById('produk').value;
+
+      let template = 'Validasi Telkomsel\n\n';
 
       if (produk === 'REGULER') {
-        template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
+        template += `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'DATA') {
-        template = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+        template += `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'TELEPON') {
-        template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+        template += `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
       }
 
       document.getElementById('output').textContent = template;
     }
 
     function clearInputs() {
-      document.getElementById('tanggal').value = '';
+      ['tanggal','nomor','sn','jumlah','durasi'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('produk').selectedIndex = 0;
-      document.getElementById('nomor').value = '';
-      document.getElementById('sn').value = '';
-      document.getElementById('jumlah').value = '';
-      document.getElementById('durasi').value = '';
       document.getElementById('output').textContent = '';
     }
 
     function copyOutput() {
-      const output = document.getElementById('output').textContent;
-      navigator.clipboard.writeText(output).then(() => {
-        alert('Template berhasil disalin!');
-      }, () => {
-        alert('Gagal menyalin template.');
-      });
+      const out = document.getElementById('output').textContent;
+      if (!out) return alert('Belum ada template untuk disalin!');
+      navigator.clipboard.writeText(out)
+        .then(() => alert('Template berhasil disalin!'))
+        .catch(() => alert('Gagal menyalin template.'));
     }
-  </script></body>
+  </script>
+</body>
 </html>
