@@ -87,10 +87,10 @@
 
       let template = '';
 
-      if (produk === 'REGULER') {
-        template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
-      } else if (produk === 'DATA') {
+      if (produk === 'DATA') {
         template = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+      } else if (produk === 'REGULER') {
+        template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'TELEPON') {
         template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
       } else if (produk === 'ISAT') {
