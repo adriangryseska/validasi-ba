@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Template Validasi Transaksi - Markaz Group - By Adrian@2025</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Template Validasi Transaksi</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       max-width: 600px;
       margin: 40px auto;
-      padding: 0 20px;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+      padding: 20px;
+      background: #f4f4f4;
     }
     label {
       font-weight: bold;
@@ -25,143 +20,166 @@
     input, select {
       width: 100%;
       padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
+      margin-top: 4px;
       border-radius: 4px;
+      border: 1px solid #ccc;
     }
+    .hidden { display: none; }
     .button-group button {
-      padding: 8px 16px;
+      padding: 8px 12px;
       margin-top: 15px;
       margin-right: 10px;
       border: none;
+      background-color: #007bff;
+      color: white;
       border-radius: 4px;
       cursor: pointer;
-      background-color: #007bff;
-      color: #fff;
-    }
-    .button-group button:hover {
-      background-color: #0056b3;
     }
     pre {
-      background-color: #fff;
+      background: white;
       padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 4px;
       white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <h1>Template Validasi Transaksi</h1>
 
-  <label for="tanggal">Tanggal Entri:</label>
-  <input type="text" id="tanggal" placeholder="contoh: 27/06/25 09:20:00">
+<h1>Template Validasi Transaksi</h1>
 
-  <label for="produk">Jenis Produk:</label>
-  <select id="produk">
-    <option value="DATA">Validasi Telkomsel Data (INTERNET)</option>
-    <option value="REGULER">Validasi Telkomsel Pulsa (REGULER)</option>
-    <option value="TELEPON">Validasi Telkomsel Paket Telepon</option>
-    <option value="ISAT">Validasi ISAT</option>
-    <option value="TDH4">Validasi TDH4 / HAPPY3H3</option>
-    <option value="THREE">Validasi THREE HAPPY</option>
-    <option value="AXIS">Validasi XL/AXIS REGULER</option>
-    <option value="XLDATA">Validasi XL Data (MEMBER ACTIVE)</option>
-  </select>
+<label for="produk">Pilih Produk:</label>
+<select id="produk" onchange="tampilkanForm()">
+  <option value="">-- Pilih Produk --</option>
+  <option value="DATA">Data (INTERNET)</option>
+  <option value="REGULER">Pulsa (REGULER)</option>
+  <option value="TELEPON">Paket Telepon</option>
+  <option value="ISAT">ISAT</option>
+  <option value="TDH4">TDH4 / HAPPY3H3</option>
+  <option value="THREE">THREE HAPPY</option>
+  <option value="AXIS">XL/AXIS REGULER</option>
+  <option value="XLDATA">XL Data (MEMBER ACTIVE)</option>
+</select>
 
-  <label for="nomor">Nomor HP:</label>
-  <input type="text" id="nomor" placeholder="contoh: 6281234567890">
+<div id="formInput" class="hidden">
 
-  <label for="sn">Serial Number (SN):</label>
-  <input type="text" id="sn" placeholder="contoh: 88880000001234567890">
+  <div id="formTanggal">
+    <label for="tanggal">Tanggal (dd/mm/yy hh:mm:ss):</label>
+    <input type="text" id="tanggal" placeholder="contoh: 27/06/25 10:20:00">
+  </div>
 
-  <label for="jumlah">Jumlah GB (Data) atau Jumlah Pulsa:</label>
-  <input type="text" id="jumlah" placeholder="contoh: 5 atau 5000">
+  <div id="formNomor">
+    <label for="nomor">Nomor HP:</label>
+    <input type="text" id="nomor" placeholder="contoh: 6281234567890">
+  </div>
 
-  <label for="durasi">Durasi Hari (khusus Data):</label>
-  <input type="text" id="durasi" placeholder="contoh: 30">
+  <div id="formSN">
+    <label for="sn">Serial Number (SN):</label>
+    <input type="text" id="sn" placeholder="contoh: 88880000001234567890">
+  </div>
+
+  <div id="formJumlah">
+    <label for="jumlah">Jumlah GB atau Pulsa:</label>
+    <input type="text" id="jumlah" placeholder="contoh: 5 atau 5000">
+  </div>
+
+  <div id="formDurasi">
+    <label for="durasi">Durasi (hari):</label>
+    <input type="text" id="durasi" placeholder="contoh: 30">
+  </div>
 
   <div class="button-group">
     <button onclick="generateTemplate()">Buat Template</button>
-    <button onclick="clearInputs()">Bersihkan Form</button>
-    <button onclick="copyOutput()">Salin Template</button>
+    <button onclick="copyOutput()">Salin</button>
   </div>
 
-  <h2>Hasil Template:</h2>
-  <pre><code id="output"></code></pre>
+  <h3>Hasil Template:</h3>
+  <pre id="output"></pre>
+</div>
 
-  <script>
-    function formatNomor(nomor) {
-      nomor = nomor.trim();
-      if (nomor.startsWith('08')) return '62' + nomor.slice(1);
-      return nomor;
-    }
+<script>
+function tampilkanForm() {
+  const produk = document.getElementById('produk').value;
+  const form = {
+    tanggal: document.getElementById('formTanggal'),
+    nomor: document.getElementById('formNomor'),
+    sn: document.getElementById('formSN'),
+    jumlah: document.getElementById('formJumlah'),
+    durasi: document.getElementById('formDurasi'),
+  };
 
-    function formatTanggalFormal(tanggalInput) {
-      const bulanIndo = [
-        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-      ];
-      const bagianTanggal = tanggalInput.split(' ')[0];
-      const [tgl, bln, thn] = bagianTanggal.split('/');
-      if (!tgl || !bln || !thn) return '[N/A]';
-      const tglInt = parseInt(tgl);
-      const blnInt = parseInt(bln);
-      const tahunLengkap = '20' + thn;
-      return `${tglInt} ${bulanIndo[blnInt - 1]} ${tahunLengkap}`;
-    }
+  // Reset semua form dulu
+  for (let f in form) form[f].classList.add('hidden');
 
-    function generateTemplate() {
-      const tanggalRaw = document.getElementById('tanggal').value || '[N/A]';
-      const nomorRaw = document.getElementById('nomor').value || '[N/A]';
-      const nomor = formatNomor(nomorRaw);
-      const sn = document.getElementById('sn').value || '[N/A]';
-      const jumlah = document.getElementById('jumlah').value || '[N/A]';
-      const durasi = document.getElementById('durasi').value || '[N/A]';
-      const produk = document.getElementById('produk').value;
+  document.getElementById('formInput').classList.remove('hidden');
 
-      let template = '';
+  if (['DATA', 'ISAT', 'THREE'].includes(produk)) {
+    form.tanggal.classList.remove('hidden');
+    form.nomor.classList.remove('hidden');
+    form.sn.classList.remove('hidden');
+    form.jumlah.classList.remove('hidden');
+    form.durasi.classList.remove('hidden');
+  } else if (produk === 'REGULER' || produk === 'AXIS' || produk === 'TELEPON') {
+    form.tanggal.classList.remove('hidden');
+    form.nomor.classList.remove('hidden');
+    form.sn.classList.remove('hidden');
+    form.jumlah.classList.remove('hidden');
+  } else if (produk === 'TDH4') {
+    form.nomor.classList.remove('hidden');
+  } else if (produk === 'XLDATA') {
+    form.tanggal.classList.remove('hidden');
+    form.nomor.classList.remove('hidden');
+    form.jumlah.classList.remove('hidden');
+  }
+}
 
-      if (produk === 'DATA') {
-        template = `${tanggalRaw}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
-      } else if (produk === 'REGULER') {
-        template = `${tanggalRaw}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
-      } else if (produk === 'TELEPON') {
-        template = `Isi ulang paket Nelpon ${nomor} pd ${tanggalRaw} berhasil Nomor seri ${sn}.`;
-      } else if (produk === 'ISAT') {
-        template = `Aktivasi Paket ${jumlah}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
-      } else if (produk === 'TDH4') {
-        template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
-      } else if (produk === 'THREE') {
-        template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlah}GBNEW ke nomor ${nomor}.  Info 888`;
-      } else if (produk === 'AXIS') {
-        template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${jumlah}.`;
-      } else if (produk === 'XLDATA') {
-        const tanggalFormal = formatTanggalFormal(tanggalRaw);
-        template = `${nomor}  MEMBER  ACTIVE  ${tanggalFormal}  ${jumlah}GB`;
-      }
+function formatTanggalFormal(tglRaw) {
+  const bulanIndo = [
+    'Januari','Februari','Maret','April','Mei','Juni',
+    'Juli','Agustus','September','Oktober','November','Desember'
+  ];
+  const bagianTanggal = tglRaw.split(' ')[0];
+  const [tgl, bln, thn] = bagianTanggal.split('/');
+  if (!tgl || !bln || !thn) return '[N/A]';
+  return `${parseInt(tgl)} ${bulanIndo[parseInt(bln)-1]} 20${thn}`;
+}
 
-      document.getElementById('output').textContent = template;
-    }
+function generateTemplate() {
+  const produk = document.getElementById('produk').value;
+  const tanggal = document.getElementById('tanggal').value || '[N/A]';
+  const nomor = document.getElementById('nomor').value || '[N/A]';
+  const sn = document.getElementById('sn').value || '[N/A]';
+  const jumlah = document.getElementById('jumlah').value || '[N/A]';
+  const durasi = document.getElementById('durasi').value || '[N/A]';
+  let output = '';
 
-    function clearInputs() {
-      ['tanggal','nomor','sn','jumlah','durasi'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('produk').selectedIndex = 0;
-      document.getElementById('output').textContent = '';
-    }
+  if (produk === 'DATA') {
+    output = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+  } else if (produk === 'REGULER') {
+    output = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
+  } else if (produk === 'TELEPON') {
+    output = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+  } else if (produk === 'ISAT') {
+    output = `Aktivasi Paket ${jumlah}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
+  } else if (produk === 'TDH4') {
+    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
+  } else if (produk === 'THREE') {
+    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlah}GBNEW ke nomor ${nomor}.  Info 888`;
+  } else if (produk === 'AXIS') {
+    output = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${jumlah}.`;
+  } else if (produk === 'XLDATA') {
+    const tglFormal = formatTanggalFormal(tanggal);
+    output = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlah}GB`;
+  }
 
-    function copyOutput() {
-      const out = document.getElementById('output').textContent;
-      if (!out) return alert('Belum ada template untuk disalin!');
-      navigator.clipboard.writeText(out)
-        .then(() => alert('Template berhasil disalin!'))
-        .catch(() => alert('Gagal menyalin template.'));
-    }
-  </script>
+  document.getElementById('output').textContent = output;
+}
 
-  <footer style="text-align: center; margin-top: 40px; font-size: 12px; color: #aaa;">
-    &copy; Markaz Group | Template Validasi by Adrian@2025
-  </footer>
+function copyOutput() {
+  const out = document.getElementById('output').textContent;
+  if (!out) return alert('Belum ada template!');
+  navigator.clipboard.writeText(out).then(() => alert('Disalin!'));
+}
+</script>
+
 </body>
 </html>
