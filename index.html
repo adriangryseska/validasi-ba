@@ -43,6 +43,12 @@
             line-height: 1.6;
             transition: all 0.3s ease;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
         }
 
         .container {
@@ -268,6 +274,53 @@
             transform: translateX(-50%) translateY(0);
         }
 
+        /* Footer Styles - Diperbaiki */
+        .footer {
+            margin-top: 4rem;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .footer-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-brand {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .footer-brand strong {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .footer-divider {
+            width: 50px;
+            height: 2px;
+            background-color: var(--border-color);
+            margin: 0 auto;
+            border-radius: 1px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem 0.5rem;
@@ -289,6 +342,15 @@
             .button-group {
                 grid-template-columns: 1fr;
             }
+
+            .footer {
+                margin-top: 3rem;
+                padding: 1.5rem 0;
+            }
+
+            .footer-container {
+                padding: 0 0.5rem;
+            }
         }
 
         .fade-in {
@@ -302,83 +364,100 @@
     </style>
 </head>
 <body>
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <span id="theme-label">Dark</span>
-        <div class="toggle-switch"></div>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>Form Generator</h1>
-            <p>Buat template dengan mudah dan cepat</p>
+    <div class="main-content">
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <span id="theme-label">Dark</span>
+            <div class="toggle-switch"></div>
         </div>
 
-        <div class="form-container">
-            <div class="form-group">
-                <label for="produk">Pilih Produk</label>
-                <select id="produk" onchange="showRelevantFields()">
-                    <option value="">-- Pilih Produk --</option>
-                    <option value="DATA">Data Internet</option>
-                    <option value="REGULER">Pulsa Reguler</option>
-                    <option value="TELEPON">Paket Telepon</option>
-                    <option value="ISAT">ISAT</option>
-                    <option value="TDH4">TDH4 / HAPPY3H3</option>
-                    <option value="THREE">THREE HAPPY</option>
-                    <option value="AXIS">XL/AXIS REGULER</option>
-                    <option value="XLDATA">XL Data Member</option>
-                </select>
+        <div class="container">
+            <div class="header">
+                <h1>Form Generator</h1>
+                <p>Buat template dengan mudah dan cepat</p>
             </div>
 
-            <div id="dynamic-fields">
-                <div class="form-group hidden" id="field-tanggal">
-                    <label for="tanggal">Tanggal</label>
-                    <input type="text" id="tanggal" placeholder="27/06/25 10:20:00">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="produk">Pilih Produk</label>
+                    <select id="produk" onchange="showRelevantFields()">
+                        <option value="">-- Pilih Produk --</option>
+                        <option value="DATA">Data Internet</option>
+                        <option value="REGULER">Pulsa Reguler</option>
+                        <option value="TELEPON">Paket Telepon</option>
+                        <option value="ISAT">ISAT</option>
+                        <option value="TDH4">TDH4 / HAPPY3H3</option>
+                        <option value="THREE">THREE HAPPY</option>
+                        <option value="AXIS">XL/AXIS REGULER</option>
+                        <option value="XLDATA">XL Data Member</option>
+                    </select>
                 </div>
 
-                <div class="form-group hidden" id="field-nomor">
-                    <label for="nomor">Nomor HP</label>
-                    <input type="text" id="nomor" placeholder="6281234567890">
+                <div id="dynamic-fields">
+                    <div class="form-group hidden" id="field-tanggal">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="text" id="tanggal" placeholder="27/06/25 10:20:00">
+                    </div>
+
+                    <div class="form-group hidden" id="field-nomor">
+                        <label for="nomor">Nomor HP</label>
+                        <input type="text" id="nomor" placeholder="6281234567890">
+                    </div>
+
+                    <div class="form-group hidden" id="field-sn">
+                        <label for="sn">Serial Number</label>
+                        <input type="text" id="sn" placeholder="88880000001234567890">
+                    </div>
+
+                    <div class="form-group hidden" id="field-jumlahGB">
+                        <label for="jumlahGB">Jumlah GB</label>
+                        <input type="number" id="jumlahGB" placeholder="5">
+                    </div>
+
+                    <div class="form-group hidden" id="field-pulsa">
+                        <label for="pulsa">Jumlah Pulsa (Rp)</label>
+                        <input type="number" id="pulsa" placeholder="5000">
+                    </div>
+
+                    <div class="form-group hidden" id="field-durasi">
+                        <label for="durasi">Durasi (hari)</label>
+                        <input type="number" id="durasi" placeholder="30">
+                    </div>
                 </div>
 
-                <div class="form-group hidden" id="field-sn">
-                    <label for="sn">Serial Number</label>
-                    <input type="text" id="sn" placeholder="88880000001234567890">
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateTemplate()">
+                        <span>📝</span> Buat Template
+                    </button>
+                    <button onclick="copyTemplate()">
+                        <span>📋</span> Salin Template
+                    </button>
+                    <button onclick="resetForm()">
+                        <span>🔄</span> Reset Form
+                    </button>
                 </div>
 
-                <div class="form-group hidden" id="field-jumlahGB">
-                    <label for="jumlahGB">Jumlah GB</label>
-                    <input type="number" id="jumlahGB" placeholder="5">
+                <div class="output-section">
+                    <div class="output-header">Template Output</div>
+                    <div class="output-content" id="output">Pilih produk dan isi data, lalu klik "Buat Template"</div>
                 </div>
-
-                <div class="form-group hidden" id="field-pulsa">
-                    <label for="pulsa">Jumlah Pulsa (Rp)</label>
-                    <input type="number" id="pulsa" placeholder="5000">
-                </div>
-
-                <div class="form-group hidden" id="field-durasi">
-                    <label for="durasi">Durasi (hari)</label>
-                    <input type="number" id="durasi" placeholder="30">
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button class="btn-primary" onclick="generateTemplate()">
-                    <span>📝</span> Buat Template
-                </button>
-                <button onclick="copyTemplate()">
-                    <span>📋</span> Salin Template
-                </button>
-                <button onclick="resetForm()">
-                    <span>🔄</span> Reset Form
-                </button>
-            </div>
-
-            <div class="output-section">
-                <div class="output-header">Template Output</div>
-                <div class="output-content" id="output">Pilih produk dan isi data, lalu klik "Buat Template"</div>
             </div>
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    Template web by <strong>Adrian</strong>
+                </div>
+                <div class="footer-divider"></div>
+                <div class="footer-copyright">
+                    &copy; 2025 Markaz Group (PT Semut Hitam Sinergi)<br>
+                    All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <div class="notification" id="notification">
         Template berhasil disalin ke clipboard!
@@ -599,5 +678,4 @@
         });
     </script>
 </body>
-<footer><div> <p>Template web by <strong>Adrian</strong></p> <p>&copy; 2025 Markaz Group (PT Semut Hitam Sinergi). All rights reserved.</p> </div> </footer>
 </html>
