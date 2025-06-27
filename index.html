@@ -1,193 +1,602 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Template Validasi Transaksi</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #f4f4f4;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .hidden {
-      display: none;
-    }
-    .button-group button {
-      padding: 8px 12px;
-      margin-top: 15px;
-      margin-right: 10px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    pre {
-      background: white;
-      padding: 10px;
-      border: 1px solid #ccc;
-      white-space: pre-wrap;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --accent-color: #000000;
+            --hover-bg: #f3f4f6;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
+            --accent-color: #ffffff;
+            --hover-bg: #374151;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: var(--border-color);
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--bg-primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .toggle-switch {
+            background-color: var(--accent-color);
+        }
+
+        [data-theme="dark"] .toggle-switch::before {
+            transform: translateX(24px);
+        }
+
+        .form-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.hidden {
+            display: none;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] input:focus, 
+        [data-theme="dark"] select:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--hover-bg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            border-color: var(--accent-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .output-section {
+            margin-top: 2rem;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .output-header {
+            padding: 1rem;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .output-content {
+            padding: 1rem;
+            min-height: 80px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        [data-theme="dark"] .notification {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem 0.5rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-label">Dark</span>
+        <div class="toggle-switch"></div>
+    </div>
 
-<h1>Template Validasi Transaksi</h1>
+    <div class="container">
+        <div class="header">
+            <h1>Form Generator</h1>
+            <p>Buat template dengan mudah dan cepat</p>
+        </div>
 
-<label for="produk">Pilih Produk:</label>
-<select id="produk" onchange="tampilkanForm()">
-  <option value="">-- Pilih Produk --</option>
-  <option value="DATA">Data (INTERNET)</option>
-  <option value="REGULER">Pulsa (REGULER)</option>
-  <option value="TELEPON">Paket Telepon</option>
-  <option value="ISAT">ISAT</option>
-  <option value="TDH4">TDH4 / HAPPY3H3</option>
-  <option value="THREE">THREE HAPPY</option>
-  <option value="AXIS">XL/AXIS REGULER</option>
-  <option value="XLDATA">XL Data (MEMBER ACTIVE)</option>
-</select>
+        <div class="form-container">
+            <div class="form-group">
+                <label for="produk">Pilih Produk</label>
+                <select id="produk" onchange="showRelevantFields()">
+                    <option value="">-- Pilih Produk --</option>
+                    <option value="DATA">Data Internet</option>
+                    <option value="REGULER">Pulsa Reguler</option>
+                    <option value="TELEPON">Paket Telepon</option>
+                    <option value="ISAT">ISAT</option>
+                    <option value="TDH4">TDH4 / HAPPY3H3</option>
+                    <option value="THREE">THREE HAPPY</option>
+                    <option value="AXIS">XL/AXIS REGULER</option>
+                    <option value="XLDATA">XL Data Member</option>
+                </select>
+            </div>
 
-<div id="formInput" class="hidden">
+            <div id="dynamic-fields">
+                <div class="form-group hidden" id="field-tanggal">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="text" id="tanggal" placeholder="27/06/25 10:20:00">
+                </div>
 
-  <div id="formTanggal">
-    <label for="tanggal">Tanggal (dd/mm/yy hh:mm:ss):</label>
-    <input type="text" id="tanggal" placeholder="contoh: 27/06/25 10:20:00">
-  </div>
+                <div class="form-group hidden" id="field-nomor">
+                    <label for="nomor">Nomor HP</label>
+                    <input type="text" id="nomor" placeholder="6281234567890">
+                </div>
 
-  <div id="formNomor">
-    <label for="nomor">Nomor HP:</label>
-    <input type="text" id="nomor" placeholder="contoh: 6281234567890">
-  </div>
+                <div class="form-group hidden" id="field-sn">
+                    <label for="sn">Serial Number</label>
+                    <input type="text" id="sn" placeholder="88880000001234567890">
+                </div>
 
-  <div id="formSN">
-    <label for="sn">Serial Number (SN):</label>
-    <input type="text" id="sn" placeholder="contoh: 88880000001234567890">
-  </div>
+                <div class="form-group hidden" id="field-jumlahGB">
+                    <label for="jumlahGB">Jumlah GB</label>
+                    <input type="number" id="jumlahGB" placeholder="5">
+                </div>
 
-  <div id="formJumlahGB">
-    <label for="jumlahGB">Jumlah GB:</label>
-    <input type="text" id="jumlahGB" placeholder="contoh: 5">
-  </div>
+                <div class="form-group hidden" id="field-pulsa">
+                    <label for="pulsa">Jumlah Pulsa (Rp)</label>
+                    <input type="number" id="pulsa" placeholder="5000">
+                </div>
 
-  <div id="formPulsa">
-    <label for="pulsa">Jumlah Pulsa (Rp):</label>
-    <input type="text" id="pulsa" placeholder="contoh: 5000">
-  </div>
+                <div class="form-group hidden" id="field-durasi">
+                    <label for="durasi">Durasi (hari)</label>
+                    <input type="number" id="durasi" placeholder="30">
+                </div>
+            </div>
 
-  <div id="formDurasi">
-    <label for="durasi">Durasi (hari):</label>
-    <input type="text" id="durasi" placeholder="contoh: 30">
-  </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="generateTemplate()">
+                    <span>📝</span> Buat Template
+                </button>
+                <button onclick="copyTemplate()">
+                    <span>📋</span> Salin Template
+                </button>
+                <button onclick="resetForm()">
+                    <span>🔄</span> Reset Form
+                </button>
+            </div>
 
-  <div class="button-group">
-    <button onclick="generateTemplate()">Buat Template</button>
-    <button onclick="copyOutput()">Salin</button>
-  </div>
+            <div class="output-section">
+                <div class="output-header">Template Output</div>
+                <div class="output-content" id="output">Pilih produk dan isi data, lalu klik "Buat Template"</div>
+            </div>
+        </div>
+    </div>
 
-  <h3>Hasil Template:</h3>
-  <pre id="output"></pre>
-</div>
+    <div class="notification" id="notification">
+        Template berhasil disalin ke clipboard!
+    </div>
 
-<script>
-function tampilkanForm() {
-  const produk = document.getElementById('produk').value;
-  const form = {
-    tanggal: document.getElementById('formTanggal'),
-    nomor: document.getElementById('formNomor'),
-    sn: document.getElementById('formSN'),
-    jumlahGB: document.getElementById('formJumlahGB'),
-    pulsa: document.getElementById('formPulsa'),
-    durasi: document.getElementById('formDurasi'),
-  };
+    <script>
+        // Konfigurasi field untuk setiap produk
+        const productFields = {
+            DATA: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
+            REGULER: ['tanggal', 'nomor', 'sn', 'pulsa'],
+            TELEPON: ['tanggal', 'nomor', 'sn'],
+            ISAT: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
+            TDH4: ['nomor'],
+            THREE: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
+            AXIS: ['tanggal', 'nomor', 'sn', 'pulsa'],
+            XLDATA: ['tanggal', 'nomor', 'jumlahGB']
+        };
 
-  for (let f in form) form[f].classList.add('hidden');
-  document.getElementById('formInput').classList.remove('hidden');
+        // Toggle theme
+        function toggleTheme() {
+            const body = document.body;
+            const themeLabel = document.getElementById('theme-label');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
 
-  if (['DATA', 'ISAT', 'THREE'].includes(produk)) {
-    form.tanggal.classList.remove('hidden');
-    form.nomor.classList.remove('hidden');
-    form.sn.classList.remove('hidden');
-    form.jumlahGB.classList.remove('hidden');
-    form.durasi.classList.remove('hidden');
-  } else if (produk === 'REGULER' || produk === 'AXIS') {
-    form.tanggal.classList.remove('hidden');
-    form.nomor.classList.remove('hidden');
-    form.sn.classList.remove('hidden');
-    form.pulsa.classList.remove('hidden');
-  } else if (produk === 'TELEPON') {
-    form.tanggal.classList.remove('hidden');
-    form.nomor.classList.remove('hidden');
-    form.sn.classList.remove('hidden');
-  } else if (produk === 'TDH4') {
-    form.nomor.classList.remove('hidden');
-  } else if (produk === 'XLDATA') {
-    form.tanggal.classList.remove('hidden');
-    form.nomor.classList.remove('hidden');
-    form.jumlahGB.classList.remove('hidden');
-  }
-}
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeLabel = document.getElementById('theme-label');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeLabel.textContent = 'Light';
+            }
+        }
 
-function formatTanggalFormal(tglRaw) {
-  const bulanIndo = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  const bagianTanggal = tglRaw.split(' ')[0];
-  const [tgl, bln, thn] = bagianTanggal.split('/');
-  if (!tgl || !bln || !thn) return '[N/A]';
-  return `${parseInt(tgl)} ${bulanIndo[parseInt(bln)-1]} 20${thn}`;
-}
+        // Show relevant fields based on product selection
+        function showRelevantFields() {
+            const selectedProduct = document.getElementById('produk').value;
+            const allFields = ['tanggal', 'nomor', 'sn', 'jumlahGB', 'pulsa', 'durasi'];
+            
+            // Hide all fields first
+            allFields.forEach(field => {
+                const fieldElement = document.getElementById(`field-${field}`);
+                fieldElement.classList.add('hidden');
+                fieldElement.classList.remove('fade-in');
+            });
 
-function generateTemplate() {
-  const produk = document.getElementById('produk').value;
-  const tanggal = document.getElementById('tanggal').value || '[N/A]';
-  const nomor = document.getElementById('nomor').value || '[N/A]';
-  const sn = document.getElementById('sn').value || '[N/A]';
-  const jumlahGB = document.getElementById('jumlahGB').value || '[N/A]';
-  const pulsa = document.getElementById('pulsa').value || '[N/A]';
-  const durasi = document.getElementById('durasi').value || '[N/A]';
-  let output = '';
+            // Show relevant fields for selected product
+            if (productFields[selectedProduct]) {
+                productFields[selectedProduct].forEach((field, index) => {
+                    const fieldElement = document.getElementById(`field-${field}`);
+                    setTimeout(() => {
+                        fieldElement.classList.remove('hidden');
+                        fieldElement.classList.add('fade-in');
+                    }, index * 50);
+                });
+            }
 
-  if (produk === 'DATA') {
-    output = `${tanggal}    INTERNET DATA ${jumlahGB}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
-  } else if (produk === 'REGULER') {
-    output = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
-  } else if (produk === 'TELEPON') {
-    output = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
-  } else if (produk === 'ISAT') {
-    output = `Aktivasi Paket ${jumlahGB}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
-  } else if (produk === 'TDH4') {
-    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
-  } else if (produk === 'THREE') {
-    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlahGB}GBNEW ke nomor ${nomor}.  Info 888`;
-  } else if (produk === 'AXIS') {
-    output = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
-  } else if (produk === 'XLDATA') {
-    const tglFormal = formatTanggalFormal(tanggal);
-    output = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
-  }
+            // Clear output
+            document.getElementById('output').textContent = 'Pilih produk dan isi data, lalu klik "Buat Template"';
+        }
 
-  document.getElementById('output').textContent = output;
-}
+        // Format date for formal display
+        function formatTanggalFormal(tglRaw) {
+            const bulanIndo = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            
+            if (!tglRaw) return '[N/A]';
+            
+            const bagianTanggal = tglRaw.split(' ')[0];
+            const [tgl, bln, thn] = bagianTanggal.split('/');
+            
+            if (!tgl || !bln || !thn) return '[N/A]';
+            
+            const bulanIndex = parseInt(bln) - 1;
+            if (bulanIndex < 0 || bulanIndex >= 12) return '[N/A]';
+            
+            return `${parseInt(tgl)} ${bulanIndo[bulanIndex]} 20${thn}`;
+        }
 
-function copyOutput() {
-  const out = document.getElementById('output').textContent;
-  if (!out) return alert('Belum ada template!');
-  navigator.clipboard.writeText(out).then(() => alert('Disalin!'));
-}
-</script>
+        // Generate template based on product and inputs
+        function generateTemplate() {
+            const produk = document.getElementById('produk').value;
+            
+            if (!produk) {
+                showNotification('Silakan pilih produk terlebih dahulu!');
+                return;
+            }
 
+            // Get input values
+            const tanggal = document.getElementById('tanggal').value || '[N/A]';
+            const nomor = document.getElementById('nomor').value || '[N/A]';
+            const sn = document.getElementById('sn').value || '[N/A]';
+            const jumlahGB = document.getElementById('jumlahGB').value || '[N/A]';
+            const pulsa = document.getElementById('pulsa').value || '[N/A]';
+            const durasi = document.getElementById('durasi').value || '[N/A]';
+
+            let template = '';
+
+            // Generate template based on product type
+            switch(produk) {
+                case 'DATA':
+                    template = `${tanggal}    INTERNET DATA ${jumlahGB}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+                    break;
+                case 'REGULER':
+                    template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
+                    break;
+                case 'TELEPON':
+                    template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+                    break;
+                case 'ISAT':
+                    template = `Aktivasi Paket ${jumlahGB}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
+                    break;
+                case 'TDH4':
+                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
+                    break;
+                case 'THREE':
+                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlahGB}GBNEW ke nomor ${nomor}.  Info 888`;
+                    break;
+                case 'AXIS':
+                    template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
+                    break;
+                case 'XLDATA':
+                    const tglFormal = formatTanggalFormal(tanggal);
+                    template = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
+                    break;
+            }
+
+            document.getElementById('output').textContent = template;
+        }
+
+        // Copy template to clipboard
+        function copyTemplate() {
+            const output = document.getElementById('output').textContent;
+            
+            if (!output || output === 'Pilih produk dan isi data, lalu klik "Buat Template"') {
+                showNotification('Belum ada template yang dibuat!');
+                return;
+            }
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(output).then(() => {
+                    showNotification('Template berhasil disalin ke clipboard!');
+                }).catch(() => {
+                    fallbackCopy(output);
+                });
+            } else {
+                fallbackCopy(output);
+            }
+        }
+
+        // Fallback copy method
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('Template berhasil disalin ke clipboard!');
+            } catch (err) {
+                showNotification('Gagal menyalin template!');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('produk').value = '';
+            
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+
+            const allFields = document.querySelectorAll('#dynamic-fields .form-group');
+            allFields.forEach(field => {
+                field.classList.add('hidden');
+                field.classList.remove('fade-in');
+            });
+
+            document.getElementById('output').textContent = 'Pilih produk dan isi data, lalu klik "Buat Template"';
+            showNotification('Form berhasil direset!');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTheme();
+        });
+    </script>
 </body>
 </html>
