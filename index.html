@@ -24,7 +24,9 @@
       border-radius: 4px;
       border: 1px solid #ccc;
     }
-    .hidden { display: none; }
+    .hidden {
+      display: none;
+    }
     .button-group button {
       padding: 8px 12px;
       margin-top: 15px;
@@ -77,9 +79,14 @@
     <input type="text" id="sn" placeholder="contoh: 88880000001234567890">
   </div>
 
-  <div id="formJumlah">
-    <label for="jumlah">Jumlah GB atau Pulsa:</label>
-    <input type="text" id="jumlah" placeholder="contoh: 5 atau 5000">
+  <div id="formJumlahGB">
+    <label for="jumlahGB">Jumlah GB:</label>
+    <input type="text" id="jumlahGB" placeholder="contoh: 5">
+  </div>
+
+  <div id="formPulsa">
+    <label for="pulsa">Jumlah Pulsa (Rp):</label>
+    <input type="text" id="pulsa" placeholder="contoh: 5000">
   </div>
 
   <div id="formDurasi">
@@ -103,40 +110,40 @@ function tampilkanForm() {
     tanggal: document.getElementById('formTanggal'),
     nomor: document.getElementById('formNomor'),
     sn: document.getElementById('formSN'),
-    jumlah: document.getElementById('formJumlah'),
+    jumlahGB: document.getElementById('formJumlahGB'),
+    pulsa: document.getElementById('formPulsa'),
     durasi: document.getElementById('formDurasi'),
   };
 
-  // Reset semua form dulu
   for (let f in form) form[f].classList.add('hidden');
-
   document.getElementById('formInput').classList.remove('hidden');
 
   if (['DATA', 'ISAT', 'THREE'].includes(produk)) {
     form.tanggal.classList.remove('hidden');
     form.nomor.classList.remove('hidden');
     form.sn.classList.remove('hidden');
-    form.jumlah.classList.remove('hidden');
+    form.jumlahGB.classList.remove('hidden');
     form.durasi.classList.remove('hidden');
-  } else if (produk === 'REGULER' || produk === 'AXIS' || produk === 'TELEPON') {
+  } else if (produk === 'REGULER' || produk === 'AXIS') {
     form.tanggal.classList.remove('hidden');
     form.nomor.classList.remove('hidden');
     form.sn.classList.remove('hidden');
-    form.jumlah.classList.remove('hidden');
+    form.pulsa.classList.remove('hidden');
+  } else if (produk === 'TELEPON') {
+    form.tanggal.classList.remove('hidden');
+    form.nomor.classList.remove('hidden');
+    form.sn.classList.remove('hidden');
   } else if (produk === 'TDH4') {
     form.nomor.classList.remove('hidden');
   } else if (produk === 'XLDATA') {
     form.tanggal.classList.remove('hidden');
     form.nomor.classList.remove('hidden');
-    form.jumlah.classList.remove('hidden');
+    form.jumlahGB.classList.remove('hidden');
   }
 }
 
 function formatTanggalFormal(tglRaw) {
-  const bulanIndo = [
-    'Januari','Februari','Maret','April','Mei','Juni',
-    'Juli','Agustus','September','Oktober','November','Desember'
-  ];
+  const bulanIndo = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const bagianTanggal = tglRaw.split(' ')[0];
   const [tgl, bln, thn] = bagianTanggal.split('/');
   if (!tgl || !bln || !thn) return '[N/A]';
@@ -148,27 +155,28 @@ function generateTemplate() {
   const tanggal = document.getElementById('tanggal').value || '[N/A]';
   const nomor = document.getElementById('nomor').value || '[N/A]';
   const sn = document.getElementById('sn').value || '[N/A]';
-  const jumlah = document.getElementById('jumlah').value || '[N/A]';
+  const jumlahGB = document.getElementById('jumlahGB').value || '[N/A]';
+  const pulsa = document.getElementById('pulsa').value || '[N/A]';
   const durasi = document.getElementById('durasi').value || '[N/A]';
   let output = '';
 
   if (produk === 'DATA') {
-    output = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+    output = `${tanggal}    INTERNET DATA ${jumlahGB}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
   } else if (produk === 'REGULER') {
     output = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
   } else if (produk === 'TELEPON') {
     output = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
   } else if (produk === 'ISAT') {
-    output = `Aktivasi Paket ${jumlah}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
+    output = `Aktivasi Paket ${jumlahGB}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
   } else if (produk === 'TDH4') {
     output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
   } else if (produk === 'THREE') {
-    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlah}GBNEW ke nomor ${nomor}.  Info 888`;
+    output = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlahGB}GBNEW ke nomor ${nomor}.  Info 888`;
   } else if (produk === 'AXIS') {
-    output = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${jumlah}.`;
+    output = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
   } else if (produk === 'XLDATA') {
     const tglFormal = formatTanggalFormal(tanggal);
-    output = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlah}GB`;
+    output = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
   }
 
   document.getElementById('output').textContent = output;
