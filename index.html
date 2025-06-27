@@ -54,7 +54,7 @@
 <body>
   <h1>Template Validasi Transaksi</h1><label for="tanggal">Tanggal Entri:</label> <input type="text" id="tanggal" placeholder="contoh: 14/06/25 18:24:20">
 
-<label for="produk">Jenis Produk:</label> <select id="produk"> <option value="DATA">Validasi Telkomsel Data (INTERNET)</option> <option value="REGULER">Validasi Telkomsel Pulsa (REGULER)</option> <option value="TELEPON">Validasi Telkomsel Paket Telepon</option> <option value="ISAT">Validasi ISAT</option> <option value="TDH4">Validasi TDH4 / HAPPY3H3</option> <option value="THREE">Validasi THREE HAPPY</option> <option value="AXIS">Validasi XL/AXIS REGULER</option> </select>
+<label for="produk">Jenis Produk:</label> <select id="produk"> <option value="DATA">Validasi Telkomsel Data (INTERNET)</option> <option value="REGULER">Validasi Telkomsel Pulsa (REGULER)</option> <option value="TELEPON">Validasi Telkomsel Paket Telepon</option> <option value="ISAT">Validasi ISAT</option> <option value="TDH4">Validasi TDH4 / HAPPY3H3</option> <option value="THREE">Validasi THREE HAPPY</option> <option value="AXIS">Validasi XL/AXIS REGULER</option> <option value="XLDATA">Validasi XL Data (MEMBER ACTIVE)</option> </select>
 
 <label for="nomor">Nomor HP:</label> <input type="text" id="nomor" placeholder="contoh: 6281234567890">
 
@@ -77,22 +77,22 @@
     }
 
     function generateTemplate() {
-      const tanggal = document.getElementById('tanggal').value || '[N/A]';
+      const tanggalRaw = document.getElementById('tanggal').value || '[N/A]';
       const nomorRaw = document.getElementById('nomor').value || '[N/A]';
       const nomor = formatNomor(nomorRaw);
       const sn = document.getElementById('sn').value || '[N/A]';
       const jumlah = document.getElementById('jumlah').value || '[N/A]';
       const durasi = document.getElementById('durasi').value || '[N/A]';
       const produk = document.getElementById('produk').value;
-
+    
       let template = '';
 
       if (produk === 'DATA') {
-        template = `${tanggal}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
+        template = `${tanggalRaw}    INTERNET DATA ${jumlah}GB ${durasi} HARI  ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'REGULER') {
-        template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
+        template = `${tanggalRaw}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
       } else if (produk === 'TELEPON') {
-        template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+        template = `Isi ulang paket Nelpon ${nomor} pd ${tanggalRaw} berhasil Nomor seri ${sn}.`;
       } else if (produk === 'ISAT') {
         template = `Aktivasi Paket ${jumlah}GB ${durasi}hari, No ${nomor} SUKSES, Saldo:Rp, TID:${sn}.`;
       } else if (produk === 'TDH4') {
@@ -101,10 +101,13 @@
         template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlah}GBNEW ke nomor ${nomor}.  Info 888`;
       } else if (produk === 'AXIS') {
         template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${jumlah}.`;
+      } else if (produk === 'XLDATA') {
+        template = `${nomor}  MEMBER  ACTIVE  ${tanggalRaw}  ${jumlah}GB`;
       }
-
+    
       document.getElementById('output').textContent = template;
     }
+
 
     function clearInputs() {
       ['tanggal','nomor','sn','jumlah','durasi'].forEach(id => document.getElementById(id).value = '');
