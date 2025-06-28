@@ -381,9 +381,9 @@
                     <label for="produk">Pilih Produk</label>
                     <select id="produk" onchange="showRelevantFields()">
                         <option value="">-- Pilih Produk --</option>
-                        <option value="DATA">Data Internet</option>
-                        <option value="REGULER">Pulsa Reguler</option>
-                        <option value="TELEPON">Paket Telepon</option>
+                        <option value="DATA">TSEL Data Internet</option>
+                        <option value="REGULER">TSEL Pulsa Reguler</option>
+                        <option value="TELEPON">TSEL Paket Telepon</option>
                         <option value="ISAT">ISAT</option>
                         <option value="TDH4">TDH4 / HAPPY3H3</option>
                         <option value="THREE">THREE HAPPY</option>
@@ -467,7 +467,7 @@
         // Konfigurasi field untuk setiap produk
         const productFields = {
             DATA: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
-            REGULER: ['tanggal', 'nomor', 'sn', 'pulsa'],
+            REGULER: ['tanggal', 'nomor', 'sn'],
             TELEPON: ['tanggal', 'nomor', 'sn'],
             ISAT: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
             TDH4: ['nomor'],
