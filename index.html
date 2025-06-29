@@ -274,7 +274,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Footer Styles - Diperbaiki */
         .footer {
             margin-top: 4rem;
             background-color: var(--bg-secondary);
@@ -484,21 +483,8 @@
             if (body.getAttribute('data-theme') === 'dark') {
                 body.removeAttribute('data-theme');
                 themeLabel.textContent = 'Dark';
-                localStorage.setItem('theme', 'light');
             } else {
                 body.setAttribute('data-theme', 'dark');
-                themeLabel.textContent = 'Light';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Load saved theme
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const themeLabel = document.getElementById('theme-label');
-            
-            if (savedTheme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
                 themeLabel.textContent = 'Light';
             }
         }
@@ -592,11 +578,8 @@
                 case 'AXIS':
                     template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
                     break;
-                case 'XLDATA
+                case 'XLDATA':
                     template = `MSIDN>${nomor}</MSIDN><SerialNo>${sn}</SerialNo><FullResponse>Transaction Success`;
-                //case 'XLDATA2':
-                    //const tglFormal = formatTanggalFormal(tanggal);
-                    //template = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
                     break;
             }
 
@@ -673,11 +656,6 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTheme();
-        });
     </script>
 </body>
-</html>
+    </html>
