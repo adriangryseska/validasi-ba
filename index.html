@@ -473,7 +473,7 @@
             TDH4: ['nomor'],
             THREE: ['tanggal', 'nomor', 'sn', 'jumlahGB', 'durasi'],
             AXIS: ['tanggal', 'nomor', 'sn', 'pulsa'],
-            XLDATA: ['tanggal', 'nomor', 'jumlahGB']
+            XLDATA: ['nomor', 'sn']
         };
 
         // Toggle theme
@@ -592,9 +592,11 @@
                 case 'AXIS':
                     template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
                     break;
-                case 'XLDATA':
-                    const tglFormal = formatTanggalFormal(tanggal);
-                    template = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
+                case 'XLDATA
+                    template = `MSIDN>${nomor}</MSIDN><SerialNo>${sn}</SerialNo><FullResponse>Transaction Success`;
+                //case 'XLDATA2':
+                    //const tglFormal = formatTanggalFormal(tanggal);
+                    //template = `${nomor}  MEMBER  ACTIVE  ${tglFormal}  ${jumlahGB}GB`;
                     break;
             }
 
