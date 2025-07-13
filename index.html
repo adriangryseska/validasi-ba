@@ -547,7 +547,10 @@
 
             // Get input values
             const tanggal = document.getElementById('tanggal').value || '[N/A]';
-            const nomor = document.getElementById('nomor').value || '[N/A]';
+            let nomor = document.getElementById('nomor').value || '[N/A]';
+                if (nomor.startsWith('08')) {
+                  nomor = '62' + nomor.slice(2);
+                }
             const sn = document.getElementById('sn').value || '[N/A]';
             const jumlahGB = document.getElementById('jumlahGB').value || '[N/A]';
             const pulsa = document.getElementById('pulsa').value || '[N/A]';
