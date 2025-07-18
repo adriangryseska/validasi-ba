@@ -383,7 +383,7 @@
                         <option value="DATA">TSEL Data Internet</option>
                         <option value="REGULER">TSEL Pulsa Reguler</option>
                         <option value="TELEPON">TSEL Paket Telepon</option>
-                        <option value="ISAT">ISAT</option>
+                        <option value="ISAT">ISAT DATA</option>
                         <option value="TDH4">TDH4 / HAPPY3H3</option>
                         <option value="THREE">THREE HAPPY</option>
                         <option value="AXIS">XL/AXIS REGULER</option>
@@ -547,9 +547,10 @@
 
             // Get input values
             const tanggal = document.getElementById('tanggal').value || '[N/A]';
-            let nomor = document.getElementById('nomor').value || '[N/A]';
+            const nomor = document.getElementById('nomor').value || '[N/A]';
+            let nomor62 = document.getElementById('nomor').value || '[N/A]';
                 if (nomor.startsWith('08')) {
-                  nomor = '62' + nomor.slice(2);
+                  nomor = '628' + nomor.slice(2);
                 }
             const sn = document.getElementById('sn').value || '[N/A]';
             const jumlahGB = document.getElementById('jumlahGB').value || '[N/A]';
@@ -567,16 +568,16 @@
                     template = `${tanggal}    TELKOMSEL ${nomor}    ${sn}  SUCCESS`;
                     break;
                 case 'TELEPON':
-                    template = `Isi ulang paket Nelpon ${nomor} pd ${tanggal} berhasil Nomor seri ${sn}.`;
+                    template = `Isi ulang paket Nelpon ${nomor62} pd ${tanggal} berhasil Nomor seri ${sn}.`;
                     break;
                 case 'ISAT':
-                    template = `Aktivasi Paket ${jumlahGB}GB ${durasi}hari, No ${nomor} SUKSES, TID:${sn}.`;
+                    template = `Aktivasi Paket ${jumlahGB}GB ${durasi}hari, No ${nomor62} SUKSES, Saldo:Rp, TID:${sn}.`;
                     break;
                 case 'TDH4':
-                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor}. Info 888`;
+                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk ke nomor ${nomor62}. Info 888`;
                     break;
                 case 'THREE':
-                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlahGB}GBNEW ke nomor ${nomor}.  Info 888`;
+                    template = `Transaksi sukses. Saldo 3Sakti Anda tlh terpotong untuk pengaktifan produk R${jumlahGB}GBNEW ke nomor ${nomor62}.  Info 888`;
                     break;
                 case 'AXIS':
                     template = `Transaksi dgn No. ${sn} berhasil utk pengisian pulsa ke ${nomor} sebesar Rp${pulsa}.`;
